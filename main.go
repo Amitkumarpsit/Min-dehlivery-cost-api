@@ -46,8 +46,11 @@ func main() {
 	}
 
 	http.HandleFunc("/min-delivery-cost", deliveryCostHandler)
-	log.Printf("Server running at http://localhost:%s\n", port)
-	log.Fatal(http.ListenAndServe(":"+port, nil))
+	log.Printf("Server running at http://0.0.0.0:%s\n", port)
+	errListen := http.ListenAndServe("0.0.0.0:"+port, nil)
+	if errListen != nil {
+		log.Fatalf("Failed to start server: %v", errListen)
+	}
 }
 
 func deliveryCostHandler(w http.ResponseWriter, r *http.Request) {
